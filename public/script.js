@@ -4,6 +4,14 @@ class MEMCPChat {
         this.currentRoom = null;
         this.nickname = null;
         this.rooms = new Map(); // Store room data
+        this.cuteNames = [
+            'FluffyPanda', 'BubbleBear', 'SparkleKitten', 'CozyCub', 'SnuggleBunny',
+            'TwinkleFox', 'BouncyPuppy', 'SweetPeach', 'CloudyDream', 'StarryOwl',
+            'HappyDolphin', 'GentleLamb', 'CheerfulBee', 'WarmHug', 'SilkyMouse',
+            'GoldenSun', 'SoftFeather', 'JoyfulBird', 'CalmWave', 'BrightMoon',
+            'PlayfulOtter', 'TenderRose', 'LightBreeze', 'CozyTiger', 'GlowWorm',
+            'SunnyDaisy', 'MellowCat', 'DreamyCloud', 'GentleRain', 'WiseFrog'
+        ];
         
         this.initEventListeners();
     }
@@ -51,11 +59,37 @@ class MEMCPChat {
         this.checkUrlParams();
     }
     
+    generateCuteUsername() {
+        return this.cuteNames[Math.floor(Math.random() * this.cuteNames.length)] + 
+               Math.floor(Math.random() * 1000);
+    }
+    
     checkUrlParams() {
         const urlParams = new URLSearchParams(window.location.search);
         const roomCode = urlParams.get('room');
         if (roomCode) {
+            // Auto-generate cute username and join directly
+            this.nickname = this.generateCuteUsername();
+            this.autoJoinRoom(roomCode.toUpperCase());
+        }
+    }
+    
+    async autoJoinRoom(roomCode) {
+        try {
+            await this.connectWebSocket();
+            this.ws.send(JSON.stringify({
+                type: 'join_room',
+                roomCode: roomCode,
+                nickname: this.nickname
+            }));
+            
+            // Update URL without room param to prevent re-joining on refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (error) {
+            console.error('Auto-join failed:', error);
+            // Fall back to manual join
             document.getElementById('room-code').value = roomCode;
+            document.getElementById('nickname').value = this.nickname;
             this.toggleJoinSection();
         }
     }

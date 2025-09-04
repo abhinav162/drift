@@ -68,15 +68,23 @@ class MEMCPChat {
         const urlParams = new URLSearchParams(window.location.search);
         const roomCode = urlParams.get('room');
         if (roomCode) {
+            console.log('Found room code in URL:', roomCode);
             // Auto-generate cute username and join directly
             this.nickname = this.generateCuteUsername();
-            this.autoJoinRoom(roomCode.toUpperCase());
+            console.log('Generated nickname:', this.nickname);
+            
+            // Add a small delay to ensure DOM is ready
+            setTimeout(() => {
+                this.autoJoinRoom(roomCode.toUpperCase());
+            }, 100);
         }
     }
     
     async autoJoinRoom(roomCode) {
         try {
+            console.log('Starting auto-join for room:', roomCode);
             await this.connectWebSocket();
+            console.log('WebSocket connected');
             
             // Show loading state
             this.showNotification(`Joining room ${roomCode} as ${this.nickname}...`, 'info');
@@ -86,6 +94,7 @@ class MEMCPChat {
                 roomCode: roomCode,
                 nickname: this.nickname
             }));
+            console.log('Join request sent');
             
             // Update URL without room param to prevent re-joining on refresh
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -93,10 +102,17 @@ class MEMCPChat {
             console.error('Auto-join failed:', error);
             this.showNotification('Failed to join room automatically', 'error');
             
-            // Fall back to manual join
-            document.getElementById('room-code').value = roomCode;
-            document.getElementById('nickname').value = this.nickname;
-            this.toggleJoinSection();
+            // Fall back to manual join - check if elements exist
+            const roomCodeInput = document.getElementById('room-code');
+            const nicknameInput = document.getElementById('nickname');
+            
+            if (roomCodeInput && nicknameInput) {
+                roomCodeInput.value = roomCode;
+                nicknameInput.value = this.nickname;
+                this.toggleJoinSection();
+            } else {
+                console.error('Required DOM elements not found for fallback');
+            }
         }
     }
     

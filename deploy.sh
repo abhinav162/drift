@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Deployment script for Oracle VM with existing nginx
+# Deployment script for Drift Chat on Oracle VM
 set -e
 
-echo "🚀 Deploying Disposable Chat App to Oracle VM..."
+echo "🚀 Deploying Drift Chat App to Oracle VM..."
 
 # Stop existing containers
 echo "⏹️ Stopping existing containers..."
@@ -20,10 +20,17 @@ sleep 5
 # Check if services are running
 if docker-compose ps | grep -q "Up"; then
     echo "✅ Deployment successful!"
-    echo "📱 Chat app is running on port 3001"
-    echo "🌐 Add this to your nginx config for disposable.giftrilo.store"
+    echo "📱 Drift Chat is running on port 3150"
+    echo "🌐 Available at: https://drift.gftrilo.store (after SSL setup)"
     echo ""
-    echo "🔧 To view logs: docker-compose logs -f disposable-chat"
+    echo "Next steps:"
+    echo "1. Copy drift.gftrilo.store.conf to /etc/nginx/sites-available/"
+    echo "2. Enable site: sudo ln -s /etc/nginx/sites-available/drift.gftrilo.store.conf /etc/nginx/sites-enabled/"
+    echo "3. Test nginx: sudo nginx -t"
+    echo "4. Reload nginx: sudo systemctl reload nginx"
+    echo "5. Generate SSL: sudo certbot --nginx -d drift.gftrilo.store"
+    echo ""
+    echo "🔧 To view logs: docker-compose logs -f drift-chat"
     echo "🛑 To stop: docker-compose down"
 else
     echo "❌ Deployment failed!"

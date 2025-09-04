@@ -77,6 +77,10 @@ class MEMCPChat {
     async autoJoinRoom(roomCode) {
         try {
             await this.connectWebSocket();
+            
+            // Show loading state
+            this.showNotification(`Joining room ${roomCode} as ${this.nickname}...`, 'info');
+            
             this.ws.send(JSON.stringify({
                 type: 'join_room',
                 roomCode: roomCode,
@@ -87,6 +91,8 @@ class MEMCPChat {
             window.history.replaceState({}, document.title, window.location.pathname);
         } catch (error) {
             console.error('Auto-join failed:', error);
+            this.showNotification('Failed to join room automatically', 'error');
+            
             // Fall back to manual join
             document.getElementById('room-code').value = roomCode;
             document.getElementById('nickname').value = this.nickname;

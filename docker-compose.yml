@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  disposable-chat:
+    build: .
+    ports:
+      - "3001:3000"  # Using port 3001 to avoid conflicts
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    container_name: disposable-chat

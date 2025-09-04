@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMCP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen">
+        <div class="welcome-container">
+            <div class="logo">
+                <h1>MEMCP</h1>
+                <p>Temporary chat rooms for your team</p>
+            </div>
+            <div class="welcome-card">
+                <h2>Get Started</h2>
+                <div class="input-group">
+                    <input type="text" id="nickname" placeholder="Enter your nickname" maxlength="20">
+                </div>
+                <div class="buttons">
+                    <button id="create-room" class="btn primary">Create New Room</button>
+                    <button id="join-room" class="btn secondary">Join Existing Room</button>
+                </div>
+                <div id="join-section" class="join-section hidden">
+                    <div class="input-group">
+                        <input type="text" id="room-code" placeholder="Enter room code">
+                    </div>
+                    <button id="join-room-btn" class="btn primary">Join Room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chat Interface -->
+    <div id="main-screen" class="screen hidden">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>MEMCP</h2>
+                <div class="user-info">
+                    <span id="current-nickname"></span>
+                </div>
+            </div>
+            
+            <div class="rooms-section">
+                <div class="section-header">
+                    <h3>Your Rooms</h3>
+                    <button id="add-room" class="btn-icon" title="Create or Join Room">+</button>
+                </div>
+                <div id="rooms-list" class="rooms-list">
+                    <!-- Rooms will be populated here -->
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button id="logout" class="btn secondary small">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="main-content">
+            <div id="no-room-selected" class="no-room-state">
+                <div class="no-room-content">
+                    <h3>Welcome to MEMCP</h3>
+                    <p>Select a room from the sidebar or create a new one to start chatting</p>
+                    <button id="create-new-room" class="btn primary">Create New Room</button>
+                </div>
+            </div>
+
+            <div id="chat-area" class="chat-area hidden">
+                <div class="chat-header">
+                    <div class="room-info">
+                        <h3 id="active-room-name">Room Name</h3>
+                        <span id="active-room-code">CODE123</span>
+                    </div>
+                    <div class="chat-actions">
+                        <button id="share-room" class="btn secondary small">📋 Share</button>
+                        <button id="leave-room" class="btn danger small">Leave</button>
+                    </div>
+                </div>
+                
+                <div id="messages" class="messages"></div>
+                
+                <div class="message-input">
+                    <input type="text" id="message-text" placeholder="Type your message..." maxlength="500">
+                    <button id="send-message" class="btn primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Creation/Join Modal -->
+    <div id="room-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Room</h3>
+                <button id="close-modal" class="btn-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-buttons">
+                    <button id="modal-create-room" class="btn primary">Create New Room</button>
+                    <button id="modal-join-room" class="btn secondary">Join Existing Room</button>
+                </div>
+                <div id="modal-join-section" class="join-section hidden">
+                    <div class="input-group">
+                        <input type="text" id="modal-room-code" placeholder="Enter room code">
+                    </div>
+                    <button id="modal-join-btn" class="btn primary">Join Room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

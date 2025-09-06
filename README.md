@@ -17,24 +17,27 @@ A lightweight, real-time chat application that creates temporary chat rooms for 
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Docker (optional, for containerized deployment)
 
 ### Local Development
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/abhinav162/drift
    cd drift
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -49,6 +52,7 @@ A lightweight, real-time chat application that creates temporary chat rooms for 
 #### Docker Deployment (Recommended)
 
 1. **Build and run with Docker Compose**
+
    ```bash
    docker-compose up -d --build
    ```
@@ -62,6 +66,7 @@ A lightweight, real-time chat application that creates temporary chat rooms for 
 #### Manual Deployment
 
 1. **Install dependencies**
+
    ```bash
    npm ci --only=production
    ```
@@ -74,12 +79,14 @@ A lightweight, real-time chat application that creates temporary chat rooms for 
 ## 🏗️ Architecture
 
 ### Backend (`server.js`)
+
 - **WebSocket Server**: Real-time bidirectional communication
 - **HTTP Server**: Serves static files and handles HTTP requests
 - **Room Management**: In-memory room storage with automatic cleanup
 - **Message Broadcasting**: Efficient message distribution to room participants
 
 ### Frontend (`public/`)
+
 - **Single Page Application**: Vanilla JavaScript with modern ES6+ features
 - **WebSocket Client**: Real-time communication with the server
 - **Responsive UI**: Mobile-first design with CSS Grid/Flexbox
@@ -103,10 +110,10 @@ A lightweight, real-time chat application that creates temporary chat rooms for 
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
+| Variable   | Default       | Description             |
+| ---------- | ------------- | ----------------------- |
 | `NODE_ENV` | `development` | Application environment |
-| `PORT` | `3000` | Server port |
+| `PORT`     | `3000`        | Server port             |
 
 ### Docker Configuration
 
@@ -115,6 +122,7 @@ The application runs on port 3000 inside the container and is mapped to port 315
 ### Nginx Reverse Proxy
 
 The included `nginx.conf` provides:
+
 - SSL termination with Let's Encrypt
 - WebSocket proxy support
 - Proper headers for real-time communication
@@ -127,6 +135,7 @@ The included `nginx.conf` provides:
 #### Client to Server
 
 **Create Room**
+
 ```json
 {
   "type": "create_room"
@@ -134,6 +143,7 @@ The included `nginx.conf` provides:
 ```
 
 **Join Room**
+
 ```json
 {
   "type": "join_room",
@@ -143,6 +153,7 @@ The included `nginx.conf` provides:
 ```
 
 **Send Message**
+
 ```json
 {
   "type": "send_message",
@@ -154,6 +165,7 @@ The included `nginx.conf` provides:
 #### Server to Client
 
 **Room Created**
+
 ```json
 {
   "type": "room_created",
@@ -162,6 +174,7 @@ The included `nginx.conf` provides:
 ```
 
 **Room Joined**
+
 ```json
 {
   "type": "joined_room",
@@ -171,6 +184,7 @@ The included `nginx.conf` provides:
 ```
 
 **New Message**
+
 ```json
 {
   "type": "message",
@@ -182,6 +196,7 @@ The included `nginx.conf` provides:
 ```
 
 **User Events**
+
 ```json
 {
   "type": "user_joined",
@@ -191,6 +206,7 @@ The included `nginx.conf` provides:
 ```
 
 **Error**
+
 ```json
 {
   "type": "error",
@@ -209,20 +225,24 @@ The included `nginx.conf` provides:
 ## 📱 Usage
 
 ### Creating a Room
+
 1. Enter a nickname
 2. Click "Create Room"
 3. Share the generated room code or URL
 
 ### Joining a Room
+
 1. Enter a nickname
 2. Click "Join Room"
 3. Enter the 6-character room code
 4. Start chatting!
 
 ### Auto-Join via URL
+
 Share URLs in the format: `https://your-domain.com/?room=ABC123`
 
 Users clicking this link will:
+
 - Get an auto-generated cute nickname
 - Automatically join the specified room
 - Start chatting immediately
@@ -230,6 +250,7 @@ Users clicking this link will:
 ## 🛠️ Development
 
 ### Project Structure
+
 ```
 disposable-chat-project/
 ├── server.js              # Express + WebSocket server
@@ -253,6 +274,7 @@ disposable-chat-project/
 ### Running Tests
 
 Currently, the project doesn't include automated tests. Consider adding:
+
 - Unit tests for server logic
 - Integration tests for WebSocket communication
 - End-to-end tests for user workflows
@@ -260,23 +282,27 @@ Currently, the project doesn't include automated tests. Consider adding:
 ## 🚀 Deployment Options
 
 ### Option 1: Docker Compose (Recommended)
+
 ```bash
 ./deploy.sh
 ```
 
 ### Option 2: Docker Hub
+
 ```bash
 docker build -t drift-chat .
 docker run -p 3150:3000 drift-chat
 ```
 
 ### Option 3: Cloud Platforms
+
 - **Heroku**: Use the included `Dockerfile`
 - **Railway**: Direct deployment from Git
 - **DigitalOcean App Platform**: Container-based deployment
 - **AWS ECS/Fargate**: Container orchestration
 
 ### Option 4: VPS with Nginx
+
 1. Clone repository to server
 2. Run `./deploy.sh`
 3. Configure nginx with provided `nginx.conf`
@@ -287,16 +313,19 @@ docker run -p 3150:3000 drift-chat
 ### Common Issues
 
 **WebSocket Connection Failed**
+
 - Check if the server is running on the correct port
 - Verify firewall settings allow WebSocket connections
 - Ensure nginx proxy configuration for WebSocket upgrade headers
 
 **Room Not Found Error**
+
 - Room codes are case-sensitive and expire when empty
 - Verify the room code is correctly entered
 - Check if the room was recently created and still active
 
 **Docker Deployment Issues**
+
 - Ensure Docker and Docker Compose are installed
 - Check port conflicts (3150 should be available)
 - Review container logs: `docker-compose logs drift-chat`
@@ -304,11 +333,13 @@ docker run -p 3150:3000 drift-chat
 ### Logs and Monitoring
 
 **Docker Logs**
+
 ```bash
 docker-compose logs -f drift-chat
 ```
 
 **Server Logs**
+
 - Connection events
 - Room creation/deletion
 - Error messages
@@ -322,6 +353,7 @@ docker-compose logs -f drift-chat
 5. Submit a pull request
 
 ### Code Style
+
 - Use modern JavaScript (ES6+)
 - Follow existing naming conventions
 - Add comments for complex logic
@@ -346,6 +378,7 @@ This project is open source. Please check the repository for specific license te
 ## 📞 Support
 
 For issues, feature requests, or questions:
+
 - Create an issue in the repository
 - Check existing documentation
 - Review troubleshooting section

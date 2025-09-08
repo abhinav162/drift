@@ -1,8 +1,14 @@
 {
   "name": "drift-chat-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Terminal-based chat client for Drift Chat - create and join temporary chat rooms from your command line",
-  "keywords": ["chat", "cli", "terminal", "websocket", "realtime"],
+  "keywords": [
+    "chat",
+    "cli",
+    "terminal",
+    "websocket",
+    "realtime"
+  ],
   "preferGlobal": true,
   "author": "Abhinav Aditya <abhinavaditya164@gmail.com>",
   "license": "MIT",

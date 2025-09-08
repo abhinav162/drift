@@ -10,7 +10,7 @@ Install the terminal-based client for command-line chatting:
 npm install -g drift-chat-cli
 ```
 
-Then run: `drift-chat`
+Then run: `drift`
 
 **Features:**
 - Chat with web users from your terminal

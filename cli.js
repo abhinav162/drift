@@ -71,7 +71,7 @@ class ChatCLI {
 
     async connectToServer() {
         return new Promise((resolve, reject) => {
-            this.ws = new WebSocket('ws://localhost:3000');
+            this.ws = new WebSocket('wss://drift.gftrilo.store');
             
             this.ws.on('open', () => {
                 this.isConnected = true;
@@ -79,7 +79,7 @@ class ChatCLI {
             });
 
             this.ws.on('error', (error) => {
-                reject(new Error('Failed to connect to server. Make sure the server is running on port 3000.'));
+                reject(new Error('Failed to connect to drift.gftrilo.store. Please check your internet connection.'));
             });
 
             this.ws.on('message', (data) => {

@@ -1,6 +1,23 @@
-# Drift Chat - Disposable Chat Rooms
+# 🚀 Drift Chat - Disposable Chat Rooms
 
 A lightweight, real-time chat application that creates temporary chat rooms for instant communication. Perfect for quick conversations, team collaboration, or ephemeral discussions.
+
+## 📱 CLI Version Available!
+
+Install the terminal-based client for command-line chatting:
+
+```bash
+npm install -g drift-chat-cli
+```
+
+Then run: `drift-chat`
+
+**Features:**
+- Chat with web users from your terminal
+- Create and join rooms using the same codes
+- Beautiful colored interface
+- Real-time messaging
+- Cross-platform support
 
 ## ✨ Features
 

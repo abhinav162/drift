@@ -1,7 +1,15 @@
 {
-  "name": "disposable-chat",
+  "name": "drift-chat-cli",
   "version": "1.0.0",
-  "description": "Lightweight temporary chat application",
+  "description": "Terminal-based chat client for Drift Chat - create and join temporary chat rooms from your command line",
+  "keywords": ["chat", "cli", "terminal", "websocket", "realtime"],
+  "author": "Abhinav Aditya <abhinavaditya164@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhinav162/drift"
+  },
+  "homepage": "https://drift.gftrilo.store",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

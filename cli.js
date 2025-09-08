@@ -218,7 +218,7 @@ class ChatCLI {
 
     startChatInterface() {
         console.log(chalk.cyan('💬 You are now in the chat! Type your messages and press Enter.'));
-        console.log(chalk.gray('Type "/quit" to leave the room.\n'));
+        console.log(chalk.gray('Commands: "/quit" to leave • "/room" to show current room code\n'));
 
         this.rl = readline.createInterface({
             input: process.stdin,
@@ -236,6 +236,12 @@ class ChatCLI {
                 this.rl.close();
                 this.ws.close();
                 process.exit(0);
+                return;
+            }
+            
+            if (message === '/room') {
+                console.log(chalk.cyan.bold(`📋 Current Room Code: ${this.roomCode || 'Not in any room'}`));
+                this.rl.prompt();
                 return;
             }
             

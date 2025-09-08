@@ -5,9 +5,15 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "cli": "node cli.js"
+  },
+  "bin": {
+    "drift-chat": "./cli.js"
   },
   "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.7",
     "ws": "^8.17.1"
   }
 }

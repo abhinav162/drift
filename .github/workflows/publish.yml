@@ -9,6 +9,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,4 +38,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add packages/cli/package.json
           git commit -m "chore: bump CLI version [skip ci]" || exit 0
-          git push
+          git push origin HEAD:main

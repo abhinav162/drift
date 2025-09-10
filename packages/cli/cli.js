@@ -230,7 +230,7 @@ class ChatCLI {
     }
 
     startChatInterface() {
-        console.log(chalk.cyan('💬 You are now in the chat! Type your messages and press Enter.'));
+        console.log(chalk.cyan('💬 You are now in the chat!! Type your messages and press Enter.'));
         console.log(chalk.gray('Commands: "/quit" to leave'));
         console.log(chalk.gray('Commands: "/room" to show current room code\n'));
 

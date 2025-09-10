@@ -218,7 +218,8 @@ class ChatCLI {
 
     startChatInterface() {
         console.log(chalk.cyan('💬 You are now in the chat! Type your messages and press Enter.'));
-        console.log(chalk.gray('Commands: "/quit" to leave • "/room" to show current room code\n'));
+        console.log(chalk.gray('Commands: "/quit" to leave\n'));
+        console.log(chalk.gray('Commands: "/room" to show current room code\n'));
 
         this.rl = readline.createInterface({
             input: process.stdin,

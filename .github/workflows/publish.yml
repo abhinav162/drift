@@ -1,8 +1,10 @@
-name: Publish to npm
+name: Publish CLI to npm
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'packages/cli/**'
 
 jobs:
   publish:
@@ -17,10 +19,10 @@ jobs:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
+      - name: Install workspace dependencies
         run: npm install
 
-      - name: Publish to npm
-        run: npm publish
+      - name: Publish CLI to npm
+        run: npm publish --workspace=packages/cli
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

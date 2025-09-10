@@ -1,15 +1,11 @@
 {
-  "name": "drift-chat-cli",
-  "version": "1.0.3",
-  "description": "Terminal-based chat client for Drift Chat - create and join temporary chat rooms from your command line",
-  "keywords": [
-    "chat",
-    "cli",
-    "terminal",
-    "websocket",
-    "realtime"
+  "name": "drift-chat-workspace",
+  "version": "1.0.0",
+  "description": "Drift Chat - Real-time chat application with CLI and web interface",
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "preferGlobal": true,
   "author": "Abhinav Aditya <abhinavaditya164@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -20,15 +16,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js",
-    "cli": "node cli.js"
-  },
-  "bin": {
-    "drift": "./cli.js"
+    "dev": "node server.js"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
-    "inquirer": "^8.2.7",
     "ws": "^8.17.1"
   }
 }

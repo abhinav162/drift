@@ -4,11 +4,14 @@ A lightweight, real-time chat application that creates temporary chat rooms for 
 
 ## 📱 CLI Version Available!
 
+**NPM Package**: [drift-chat-cli](https://www.npmjs.com/package/drift-chat-cli)
+
 Install the terminal-based client for command-line chatting:
 
 ```bash
 npm install -g drift-chat-cli
 ```
+
 
 Then run: `drift`
 

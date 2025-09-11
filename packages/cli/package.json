@@ -30,7 +30,8 @@
   },
   "files": [
     "cli.js",
-    "README.md"
+    "README.md",
+    "modules"
   ],
   "dependencies": {
     "chalk": "^4.1.2",

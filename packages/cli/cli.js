@@ -20,8 +20,7 @@ class ChatCLI {
     }
 
     async start() {
-        console.log(chalk.blue.bold('\n🚀 Drift Chat CLI'));
-        console.log(chalk.gray('Connect to chat rooms from your terminal!\n'));
+        this.displayBanner();
 
         try {
             await this.showMainMenu();
@@ -29,6 +28,19 @@ class ChatCLI {
             console.error(chalk.red('Error:', error.message));
             process.exit(1);
         }
+    }
+
+    displayBanner() {
+        console.log(chalk.magentaBright(`
+    ██████╗ ██████╗ ██╗███████╗████████╗
+    ██╔══██╗██╔══██╗██║██╔════╝╚══██╔══╝
+    ██║  ██║██████╔╝██║█████╗     ██║
+    ██║  ██║██╔══██╗██║██╔══╝     ██║
+    ██████╔╝██║  ██║██║██║        ██║
+    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝
+        `));
+        console.log(chalk.blue.bold('           🚀 CLI'));
+        console.log(chalk.gray('    Connect to chat rooms from your terminal!\n'));
     }
 
     async showMainMenu() {

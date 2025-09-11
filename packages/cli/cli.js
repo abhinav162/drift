@@ -66,7 +66,7 @@ class ChatCLI {
                 message: 'Enter your nickname:',
                 validate: (input) => {
                     if (!input.trim()) return 'Nickname cannot be empty';
-                    if (input.length > 20) return 'Nickname must be 20 characters or less';
+                    if (input.length > 50) return 'Nickname must be 20 characters or less';
                     return true;
                 }
             }

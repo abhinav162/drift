@@ -1,6 +1,6 @@
 {
   "name": "drift-chat-cli",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Terminal-based chat client for Drift Chat - create and join temporary chat rooms from your command line",
   "keywords": [
     "chat",

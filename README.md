@@ -385,15 +385,41 @@ This project is open source. Please check the repository for specific license te
 
 ## 🎯 Roadmap
 
-- [ ] Message persistence options
-- [ ] File sharing capabilities
-- [ ] Room passwords/privacy settings
-- [ ] User typing indicators
-- [ ] Message reactions/emojis
-- [ ] Room member list
-- [ ] Message search functionality
-- [ ] Custom themes
-- [ ] Mobile app versions
+### ✅ Completed
+
+- [x] **CLI Client** - Terminal-based chat client with full feature parity
+- [x] **Cross-Platform Chat** - Web and CLI users can chat together seamlessly
+- [x] **Interactive Games** - Trivia, fortune cookies, and ASCII art in CLI
+- [x] **Emoji Support** - Emoji shortcuts with smart autocomplete suggestions
+- [x] **Auto-Update Notifications** - CLI version checking and update prompts
+- [x] **Modular Architecture** - Clean separation of concerns for better maintainability
+
+### 🚧 In Progress
+
+- [ ] **BYOS (Bring Your Own Server)** - Self-hosted server option with Docker image
+- [ ] **CLI Docker Image** - Containerized CLI client for easy deployment
+- [ ] **Contribution Guidelines** - Detailed docs for contributors
+
+### 🔮 Planned Features
+
+#### Core Functionality
+- [ ] **Message Persistence** - Optional message history storage
+- [ ] **Room Passwords** - Private rooms with password protection
+- [ ] **User Typing Indicators** - See when someone is typing
+- [ ] **Message Reactions** - React to messages with emojis
+- [ ] **Room Member List** - See who's currently in the room
+
+#### Advanced Features
+- [ ] **Message Search** - Search through chat history
+- [ ] **Custom Themes** - Personalize the chat interface
+- [ ] **Bot Integration** - Add bots for automation and fun
+
+#### Self-Hosting & Enterprise
+- [ ] **BYOS Docker Image** - Complete server package for self-hosting
+- [ ] **Multi-Server Federation** - Connect multiple Drift Chat servers
+- [ ] **Admin Dashboard** - Server management and analytics
+- [ ] **User Management** - Registration, profiles, and permissions
+
 
 ## 📞 Support
 

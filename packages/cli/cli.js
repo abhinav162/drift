@@ -2,6 +2,7 @@
 
 const inquirer = require('inquirer');
 const chalk = require('chalk');
+const packageJson = require('./package.json');
 
 // Import modules
 const Games = require('./modules/games');
@@ -9,6 +10,7 @@ const Display = require('./modules/display');
 const ChatClient = require('./modules/chat-client');
 const InputHandler = require('./modules/input-handler');
 const Emoji = require('./modules/emoji');
+const VersionChecker = require('./modules/version-checker');
 
 class ChatCLI {
     constructor() {
@@ -18,6 +20,7 @@ class ChatCLI {
         this.emoji = new Emoji();
         this.chatClient = new ChatClient(this.display);
         this.inputHandler = new InputHandler(this.chatClient, this.display, this.games, this.emoji);
+        this.versionChecker = new VersionChecker(packageJson.name, packageJson.version);
         
         // Track if we're in chat mode
         this.inChatMode = false;
@@ -25,6 +28,9 @@ class ChatCLI {
 
     async start() {
         this.display.displayBanner();
+        
+        // Check for updates (non-blocking)
+        await this.versionChecker.checkForUpdates();
 
         try {
             await this.showMainMenu();

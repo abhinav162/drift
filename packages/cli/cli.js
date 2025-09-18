@@ -8,14 +8,16 @@ const Games = require('./modules/games');
 const Display = require('./modules/display');
 const ChatClient = require('./modules/chat-client');
 const InputHandler = require('./modules/input-handler');
+const Emoji = require('./modules/emoji');
 
 class ChatCLI {
     constructor() {
         // Initialize modules
         this.display = new Display();
         this.games = new Games();
+        this.emoji = new Emoji();
         this.chatClient = new ChatClient(this.display);
-        this.inputHandler = new InputHandler(this.chatClient, this.display, this.games);
+        this.inputHandler = new InputHandler(this.chatClient, this.display, this.games, this.emoji);
         
         // Track if we're in chat mode
         this.inChatMode = false;

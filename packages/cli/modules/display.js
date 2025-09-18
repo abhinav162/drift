@@ -34,6 +34,10 @@ class Display {
         console.log(chalk.gray('👉 ') + chalk.greenBright('/trivia') + chalk.white(' → Random trivias 🧠'));
         console.log(chalk.gray('👉 ') + chalk.blueBright('/fortune') + chalk.white(' → Quirky quotes 🍀'));
         console.log(chalk.gray('👉 ') + chalk.magentaBright('/art') + chalk.white(' → Fun ASCII art 🎨'));
+        
+        console.log(chalk.gray('\nOther Features:'));
+        console.log(chalk.gray('👉 ') + chalk.yellowBright('/emojis') + chalk.white(' → Show emoji shortcuts 😊'));
+        console.log(chalk.gray('👉 ') + chalk.gray('Use :) :D :heart: etc in messages for emojis!'));
     }
 
     displayMessage(message, currentNickname) {

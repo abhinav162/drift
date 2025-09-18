@@ -1,10 +1,11 @@
 const chalk = require('chalk');
 
 class InputHandler {
-    constructor(chatClient, display, games) {
+    constructor(chatClient, display, games, emoji) {
         this.chatClient = chatClient;
         this.display = display;
         this.games = games;
+        this.emoji = emoji;
         this.currentInput = '';
         this.cursorPosition = 0;
         this.inputBoxActive = false;
@@ -86,7 +87,9 @@ class InputHandler {
         }
 
         if (message === '/help') {
-            this.display.showHelpMessage(this.games.getAvailableCommands());
+            const gameCommands = this.games.getAvailableCommands();
+            const emojiCommands = [{ command: '/emojis', description: 'Show emoji shortcuts' }];
+            this.display.showHelpMessage([...gameCommands, ...emojiCommands]);
             this.resetInput();
             this.display.redrawInputBox(this.currentInput, this.cursorPosition);
             return;
@@ -115,9 +118,18 @@ class InputHandler {
             this.display.redrawInputBox(this.currentInput, this.cursorPosition);
             return;
         }
+
+        if (message === '/emojis') {
+            this.showEmojiHelp();
+            this.resetInput();
+            this.display.redrawInputBox(this.currentInput, this.cursorPosition);
+            return;
+        }
         
         if (message !== '') {
-            this.chatClient.sendMessage(message);
+            // Convert emoji shortcuts before sending
+            const messageWithEmojis = this.emoji.convertEmojis(message);
+            this.chatClient.sendMessage(messageWithEmojis);
         }
         
         this.resetInput();
@@ -156,6 +168,26 @@ class InputHandler {
         this.currentInput = '';
         this.cursorPosition = 0;
     }
+
+    showEmojiHelp() {
+        if (this.inputBoxActive) {
+            this.display.clearInputBox();
+        }
+        
+        const categories = this.emoji.getEmojiHelp();
+        
+        console.log(chalk.yellow('😊 EMOJI SHORTCUTS:'));
+        Object.keys(categories).forEach(category => {
+            console.log(chalk.cyan(`\n${category}:`));
+            categories[category].forEach(shortcut => {
+                const emoji = this.emoji.emojiMap[shortcut];
+                console.log(chalk.gray(`  ${shortcut.padEnd(12)} → ${emoji}`));
+            });
+        });
+        console.log(chalk.gray('\nType emoji shortcuts in your messages to convert them!'));
+        console.log(chalk.gray('Example: "Hello :) How are you? :thumbsup:"'));
+    }
+
 
     cleanup() {
         if (this.inputBoxActive) {

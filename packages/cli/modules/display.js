@@ -3,6 +3,9 @@ const chalk = require('chalk');
 class Display {
     constructor() {
         this.inputBoxActive = false;
+        this.suggestionsActive = false;
+        this.suggestionLines = 0;
+        this.redrawCallback = null;
     }
 
     displayBanner() {
@@ -37,6 +40,7 @@ class Display {
         
         console.log(chalk.gray('\nOther Features:'));
         console.log(chalk.gray('👉 ') + chalk.yellowBright('/emojis') + chalk.white(' → Show emoji shortcuts 😊'));
+        console.log(chalk.gray('👉 ') + chalk.gray('Type ":" for emoji suggestions (↑↓ to navigate, Tab to select)'));
         console.log(chalk.gray('👉 ') + chalk.gray('Use :) :D :heart: etc in messages for emojis!'));
     }
 
@@ -44,8 +48,14 @@ class Display {
         const time = new Date(message.timestamp).toLocaleTimeString();
         const isOwnMessage = message.nickname === currentNickname;
 
+        // Clear input and suggestions if active
+        const wasInputActive = this.inputBoxActive;
+        
         if (this.inputBoxActive) {
             this.clearInputBox();
+        }
+        if (this.suggestionsActive) {
+            this.clearEmojiSuggestions();
         }
 
         if (isOwnMessage) {
@@ -54,26 +64,40 @@ class Display {
             console.log(chalk.gray(`[${time}] `) + chalk.green.bold(`${message.nickname}: `) + message.message);
         }
 
-        if (this.inputBoxActive) {
-            // Note: redraw will be called by the input handler
+        // Restore input if it was active and we have a redraw callback
+        if (wasInputActive && this.redrawCallback) {
+            this.redrawCallback();
         }
     }
 
     displaySystemMessage(text) {
+        // Clear input and suggestions if active
+        const wasInputActive = this.inputBoxActive;
+        
         if (this.inputBoxActive) {
             this.clearInputBox();
+        }
+        if (this.suggestionsActive) {
+            this.clearEmojiSuggestions();
         }
 
         console.log(chalk.yellow(`🔔 ${text}`));
 
-        if (this.inputBoxActive) {
-            // Note: redraw will be called by the input handler
+        // Restore input if it was active and we have a redraw callback
+        if (wasInputActive && this.redrawCallback) {
+            this.redrawCallback();
         }
     }
 
     showHelpMessage(gameCommands) {
+        // Clear input and suggestions if active
+        const wasInputActive = this.inputBoxActive;
+        
         if (this.inputBoxActive) {
             this.clearInputBox();
+        }
+        if (this.suggestionsActive) {
+            this.clearEmojiSuggestions();
         }
 
         console.log(chalk.yellow('🎮 P A S T I M E:'));
@@ -83,17 +107,33 @@ class Display {
         console.log(chalk.gray('  /help      - Show this help'));
         console.log(chalk.gray('  /room      - Show room code'));
         console.log(chalk.gray('  /quit      - Leave the room'));
+        
+        // Restore input if it was active and we have a redraw callback
+        if (wasInputActive && this.redrawCallback) {
+            this.redrawCallback();
+        }
     }
 
     showGameContent(gameData) {
+        // Clear input and suggestions if active
+        const wasInputActive = this.inputBoxActive;
+        
         if (this.inputBoxActive) {
             this.clearInputBox();
+        }
+        if (this.suggestionsActive) {
+            this.clearEmojiSuggestions();
         }
 
         console.log(gameData.header);
         gameData.content.forEach(line => {
             console.log(line);
         });
+        
+        // Restore input if it was active and we have a redraw callback
+        if (wasInputActive && this.redrawCallback) {
+            this.redrawCallback();
+        }
     }
 
     clearInputBox() {
@@ -128,6 +168,92 @@ class Display {
 
     setInputBoxActive(active) {
         this.inputBoxActive = active;
+    }
+
+    setRedrawCallback(callback) {
+        this.redrawCallback = callback;
+    }
+
+    displayEmojiSuggestions(suggestions, selectedIndex = 0) {
+        if (!suggestions || suggestions.length === 0) {
+            this.clearEmojiSuggestions();
+            return;
+        }
+
+        // Clear previous suggestions first
+        this.clearEmojiSuggestions();
+
+        // Move cursor to next line for suggestions
+        process.stdout.write('\n');
+
+        suggestions.forEach((suggestion, index) => {
+            const isSelected = index === selectedIndex;
+            const prefix = isSelected ? chalk.bgBlue.white(' ► ') : '   ';
+            const emoji = chalk.yellow(suggestion.emoji);
+            const shortcut = chalk.gray(suggestion.shortcut);
+            const description = chalk.dim(suggestion.description);
+            
+            process.stdout.write(prefix + emoji + ' ' + shortcut + ' ' + description + '\n');
+        });
+
+        this.suggestionsActive = true;
+        this.suggestionLines = suggestions.length;
+
+        // Move cursor back to input line
+        process.stdout.write(`\u001b[${suggestions.length + 1}A`); // Move up by number of suggestion lines + 1
+    }
+
+    clearEmojiSuggestions() {
+        if (!this.suggestionsActive || this.suggestionLines === 0) {
+            return;
+        }
+
+        // Save current cursor position
+        process.stdout.write('\u001b[s');
+
+        // Move to start of suggestions and clear them
+        process.stdout.write('\n'); // Go to next line (where suggestions start)
+        for (let i = 0; i < this.suggestionLines; i++) {
+            process.stdout.write('\u001b[2K'); // Clear entire line
+            if (i < this.suggestionLines - 1) {
+                process.stdout.write('\u001b[1B'); // Move down one line
+            }
+        }
+
+        // Move back to input line
+        process.stdout.write(`\u001b[${this.suggestionLines}A`); // Move up by number of suggestion lines
+
+        this.suggestionsActive = false;
+        this.suggestionLines = 0;
+    }
+
+    updateSelectedSuggestion(suggestions, selectedIndex) {
+        if (!this.suggestionsActive || !suggestions || suggestions.length === 0) {
+            return;
+        }
+
+        // Move to suggestion area and redraw
+        process.stdout.write('\n');
+        
+        suggestions.forEach((suggestion, index) => {
+            const isSelected = index === selectedIndex;
+            const prefix = isSelected ? chalk.bgBlue.white(' ► ') : '   ';
+            const emoji = chalk.yellow(suggestion.emoji);
+            const shortcut = chalk.gray(suggestion.shortcut);
+            const description = chalk.dim(suggestion.description);
+            
+            // Clear line and redraw
+            process.stdout.write('\u001b[2K'); // Clear entire line
+            process.stdout.write('\u001b[1G'); // Move to beginning of line
+            process.stdout.write(prefix + emoji + ' ' + shortcut + ' ' + description);
+            
+            if (index < suggestions.length - 1) {
+                process.stdout.write('\n');
+            }
+        });
+
+        // Move cursor back to input line
+        process.stdout.write(`\u001b[${suggestions.length}A`); // Move up by number of suggestion lines
     }
 }
 

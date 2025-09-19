@@ -116,6 +116,18 @@ Then run: `drift`
 
 ```
 ├── server.js              # Main server application
+├── packages/cli/       # CLI client package
+│   ├── cli.js             # CLI entry point
+│   ├── package.json       # CLI package configuration
+│   ├── README.md          # CLI documentation
+│   └── modules/           # CLI modular components
+│       ├── chat-client.js    # WebSocket client handler
+│       ├── display.js        # Terminal UI management
+│       ├── input-handler.js  # Keyboard input processing
+│       ├── games.js          # Interactive games (trivia, fortune, art)
+│       ├── emoji.js          # Emoji shortcuts and suggestions
+│       └── version-checker.js # Auto-update notifications
+├── package.json           # Main project dependencies and scripts
 ├── public/
 │   ├── index.html         # Main HTML template
 │   ├── script.js          # Client-side JavaScript
@@ -272,13 +284,25 @@ Users clicking this link will:
 ### Project Structure
 
 ```
-disposable-chat-project/
+drift/
 ├── server.js              # Express + WebSocket server
 ├── public/
 │   ├── index.html         # Main application UI
 │   ├── script.js          # Client-side logic
 │   └── style.css          # Styling
-├── package.json           # Dependencies and scripts
+├── packages/
+│   └── cli/               # CLI package (published to npm)
+│       ├── cli.js         # Main CLI entry point
+│       ├── package.json   # CLI package configuration
+│       ├── README.md      # CLI-specific documentation
+│       └── modules/       # Modular CLI components
+│           ├── chat-client.js    # WebSocket client handler
+│           ├── display.js        # Terminal UI management
+│           ├── input-handler.js  # Keyboard input processing
+│           ├── games.js          # Interactive games (trivia, fortune, art)
+│           ├── emoji.js          # Emoji shortcuts and suggestions
+│           └── version-checker.js # Auto-update notifications
+├── package.json           # Main project dependencies and scripts
 ├── Dockerfile             # Container build instructions
 ├── docker-compose.yml     # Service orchestration
 ├── nginx.conf            # Reverse proxy config
@@ -287,9 +311,22 @@ disposable-chat-project/
 
 ### Adding New Features
 
+#### Web Application
 1. **Server-side changes**: Modify `server.js` for new WebSocket message types
 2. **Client-side changes**: Update `public/script.js` for new UI functionality
 3. **Styling**: Edit `public/style.css` for visual changes
+
+#### CLI Application
+1. **Core functionality**: Add features in `packages/cli/modules/`
+2. **UI components**: Extend `display.js` for new terminal interfaces
+3. **Input handling**: Modify `input-handler.js` for new commands
+4. **Games & activities**: Add to `games.js` or create new modules
+5. **WebSocket integration**: Update `chat-client.js` for protocol changes
+
+#### Development Workflow
+1. **Test locally**: Use `node cli.js` in the CLI package directory
+2. **Version management**: Update `package.json` version for releases
+3. **Publishing**: CLI is automatically published to npm via GitHub Actions once merged to main
 
 ### Running Tests
 

@@ -12,7 +12,7 @@ class ChatClient {
 
     async connectToServer() {
         return new Promise((resolve, reject) => {
-            this.ws = new WebSocket('wss://drift.gftrilo.store');
+            this.ws = new WebSocket('wss://drift.abhinavaditya.com');
             
             this.ws.on('open', () => {
                 this.isConnected = true;
@@ -20,7 +20,7 @@ class ChatClient {
             });
 
             this.ws.on('error', (error) => {
-                reject(new Error('Failed to connect to drift.gftrilo.store. Please check your internet connection.'));
+                reject(new Error('Failed to connect to drift.abhinavaditya.com. Please check your internet connection.'));
             });
 
             this.ws.on('message', (data) => {

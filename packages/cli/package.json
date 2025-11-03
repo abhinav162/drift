@@ -23,7 +23,7 @@
     "url": "https://github.com/abhinav162/drift",
     "directory": "packages/cli"
   },
-  "homepage": "https://drift.gftrilo.store",
+  "homepage": "https://drift.abhinavaditya.com",
   "main": "cli.js",
   "bin": {
     "drift": "./cli.js"

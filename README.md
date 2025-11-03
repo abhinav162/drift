@@ -271,7 +271,7 @@ The included `nginx.conf` provides:
 
 ### Auto-Join via URL
 
-Share URLs in the format: `https://drift.gftrilo.store?room=ABC123`
+Share URLs in the format: `https://drift.abhinavaditya.com?room=ABC123`
 
 Users clicking this link will:
 

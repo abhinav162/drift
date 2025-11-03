@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/abhinav162/drift"
   },
-  "homepage": "https://drift.gftrilo.store",
+  "homepage": "https://drift.abhinavaditya.com",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

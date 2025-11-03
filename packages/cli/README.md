@@ -57,7 +57,7 @@ While in a chat room, you can use these commands:
 
 Drift Chat is a real-time chat application that allows you to create temporary chat rooms for quick conversations. No registration required - just create a room, share the code, and start chatting!
 
-- **Web version**: [drift.gftrilo.store](https://drift.gftrilo.store)
+- **Web version**: [drift.abhinavaditya.com](https://drift.abhinavaditya.com)
 - **Source code**: [GitHub](https://github.com/abhinav162/drift)
 
 ## 🛠️ Requirements

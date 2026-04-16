@@ -11,6 +11,7 @@ const ChatClient = require('./modules/chat-client');
 const InputHandler = require('./modules/input-handler');
 const Emoji = require('./modules/emoji');
 const VersionChecker = require('./modules/version-checker');
+const SnakeClient = require('./modules/snake-client');
 
 class ChatCLI {
     constructor() {
@@ -49,6 +50,7 @@ class ChatCLI {
                 choices: [
                     { name: '🆕 Create a new chat room', value: 'create' },
                     { name: '🚪 Join an existing room', value: 'join' },
+                    { name: '🐍 Play Snake (2–6 players)', value: 'snake' },
                     { name: '❌ Exit', value: 'exit' }
                 ]
             }
@@ -61,10 +63,65 @@ class ChatCLI {
             case 'join':
                 await this.joinRoom();
                 break;
+            case 'snake':
+                await this.playSnake();
+                break;
             case 'exit':
                 console.log(chalk.yellow('Goodbye! 👋'));
                 process.exit(0);
         }
+    }
+
+    async playSnake() {
+        const { snakeAction } = await inquirer.prompt([{
+            type: 'list',
+            name: 'snakeAction',
+            message: 'Snake:',
+            choices: [
+                { name: '🆕 Create a new game', value: 'create' },
+                { name: '🚪 Join an existing game', value: 'join' },
+                { name: '← Back',                  value: 'back'  },
+            ],
+        }]);
+
+        if (snakeAction === 'back') return this.showMainMenu();
+
+        const nickname = await this.getNickname();
+
+        let roomCode = null;
+        if (snakeAction === 'join') {
+            const ans = await inquirer.prompt([{
+                type: 'input',
+                name: 'roomCode',
+                message: 'Enter game code:',
+                validate: (v) => v.trim() ? true : 'Code cannot be empty',
+            }]);
+            roomCode = ans.roomCode.trim().toUpperCase();
+        }
+
+        console.log(chalk.yellow('🔌 Connecting to server…'));
+
+        const snake = new SnakeClient();
+        snake.nickname = nickname;
+        snake.onReturnToMenu = () => {
+            console.log(chalk.yellow('\nReturning to menu…\n'));
+            this.showMainMenu();
+        };
+
+        try {
+            await snake.connect();
+        } catch (err) {
+            console.error(chalk.red(err.message));
+            return this.showMainMenu();
+        }
+
+        if (snakeAction === 'create') {
+            snake.createRoom();
+        } else {
+            snake.joinRoom(roomCode);
+        }
+
+        snake.setupInput();
     }
 
     async getNickname() {

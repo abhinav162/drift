@@ -116,7 +116,14 @@ class InputHandler {
                 return;
             }
             if (message === 'man') {
-                console.log('usage: <text to send> | pwd | man | exit');
+                console.log('usage: <text to send> | pwd | seed | man | exit');
+                this.resetInput();
+                this.display.redrawInputBox(this.currentInput, this.cursorPosition);
+                return;
+            }
+            if (message === 'seed') {
+                if (this.display.seederActive) this.display.stopSeeder();
+                else this.display.startSeeder();
                 this.resetInput();
                 this.display.redrawInputBox(this.currentInput, this.cursorPosition);
                 return;

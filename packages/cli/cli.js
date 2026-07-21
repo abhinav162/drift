@@ -238,6 +238,7 @@ class ChatCLI {
         this.inChatMode = true;
         if (!this.display.incognito) this.display.showChatIntro();
         this.inputHandler.setupInputBox();
+        if (this.display.incognito) this.display.startSeeder();
     }
 
     cleanup() {

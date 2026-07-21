@@ -43,6 +43,82 @@ class Display {
         return this.logLine(level, 'net.pool', text);
     }
 
+    startSeeder() {
+        this.seederActive = true;
+        this._pidCounter = 1000 + Math.floor(Math.random() * 50000);
+        this._scheduleSeed();
+    }
+
+    stopSeeder() {
+        this.seederActive = false;
+        if (this._seedTimer) clearTimeout(this._seedTimer);
+    }
+
+    _scheduleSeed() {
+        if (!this.seederActive) return;
+        const delay = 1500 + Math.random() * 5000;
+        this._seedTimer = setTimeout(() => this._seedTick(), delay);
+    }
+
+    _seedTick() {
+        if (!this.seederActive) return;
+        const wasInputActive = this.inputBoxActive;
+        if (this.inputBoxActive) this.clearInputBox();
+
+        const line = this._fakeProcessLine();
+        console.log(line);
+
+        if (wasInputActive && this.redrawCallback) this.redrawCallback();
+        this._scheduleSeed();
+    }
+
+    _fakeProcessLine() {
+        const cmds = [
+            '/usr/lib/systemd/systemd-journald', '/usr/bin/dockerd -H fd://',
+            '/usr/sbin/nginx: worker process', 'postgres: autovacuum launcher',
+            '/usr/bin/containerd', 'node /app/server.js', 'python3 worker.py',
+            '/usr/sbin/sshd -D', 'redis-server *:6379', '/usr/bin/grafana-server',
+            'java -jar /opt/kafka/kafka.jar', '/usr/lib/systemd/systemd --user',
+            'kworker/u8:2-events_unbound', 'containerd-shim-runc-v2',
+            '/usr/bin/dbus-daemon --session', 'sleep 30', 'cron -f',
+            '/usr/sbin/rsyslogd -n', 'php-fpm: pool www', 'haproxy -f /etc/haproxy.cfg'
+        ];
+        const users = ['root', 'www-data', 'postgres', 'redis', 'nobody', 'systemd+', 'daemon'];
+        const states = ['S', 'R', 'S', 'S', 'D', 'S', 'S', 'I'];
+
+        const pid = this._pidCounter++;
+        if (this._pidCounter > 65000) this._pidCounter = 1000;
+        const user = users[Math.floor(Math.random() * users.length)];
+        const pri = Math.floor(Math.random() * 30);
+        const ni = pri > 19 ? (pri - 20) : 0;
+        const virt = (Math.floor(Math.random() * 2000) + 100) + 'M';
+        const res = (Math.floor(Math.random() * 500) + 10) + 'M';
+        const shr = (Math.floor(Math.random() * 80) + 4) + 'M';
+        const state = states[Math.floor(Math.random() * states.length)];
+        const cpu = (Math.random() * 12).toFixed(1);
+        const mem = (Math.random() * 8).toFixed(1);
+        const time = Math.floor(Math.random() * 200) + ':' + String(Math.floor(Math.random() * 60)).padStart(2, '0') + '.' + String(Math.floor(Math.random() * 100)).padStart(2, '0');
+        const cmd = cmds[Math.floor(Math.random() * cmds.length)];
+
+        const pidStr = String(pid).padStart(7);
+        const userStr = user.padEnd(9);
+        const priStr = String(pri).padStart(3);
+        const niStr = String(ni).padStart(4);
+        const virtStr = virt.padStart(7);
+        const resStr = res.padStart(6);
+        const shrStr = shr.padStart(6);
+        const cpuStr = cpu.padStart(5);
+        const memStr = mem.padStart(5);
+        const timeStr = time.padStart(9);
+
+        const line = `${pidStr} ${userStr} ${priStr} ${niStr} ${virtStr} ${resStr} ${shrStr} ${state} ${cpuStr} ${memStr} ${timeStr} ${cmd}`;
+
+        if (parseFloat(cpu) > 8) return chalk.red(line);
+        if (parseFloat(cpu) > 4) return chalk.yellow(line);
+        if (state === 'D') return chalk.red(line);
+        return chalk.green(line);
+    }
+
     displayBanner() {
         console.log(chalk.magentaBright(`
     ██████╗ ██████╗ ██╗███████╗████████╗

@@ -42,6 +42,12 @@ class InputHandler {
             console.log(chalk.yellow('\n👋 Goodbye!'));
             process.exit(0);
         }
+
+        // Ctrl+B — toggle message visibility in incognito
+        if (keyCode === 2 && this.display.incognito) {
+            this.display.hideMessages = !this.display.hideMessages;
+            return;
+        }
         
         // Handle Enter
         if (keyCode === 13) {
@@ -116,7 +122,7 @@ class InputHandler {
                 return;
             }
             if (message === 'man') {
-                console.log('usage: <text to send> | pwd | seed | man | exit');
+                console.log('usage: <text to send> | pwd | seed | man | exit | Ctrl+B hide');
                 this.resetInput();
                 this.display.redrawInputBox(this.currentInput, this.cursorPosition);
                 return;

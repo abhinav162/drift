@@ -7,6 +7,7 @@ class Display {
         this.suggestionLines = 0;
         this.redrawCallback = null;
         this.incognito = false;
+        this.hideMessages = false;
     }
 
     moduleFor(nickname) {
@@ -157,6 +158,7 @@ class Display {
 
     displayMessage(message, currentNickname) {
         if (this.incognito) {
+            if (this.hideMessages) return;
             const wasInputActive = this.inputBoxActive;
             if (this.inputBoxActive) this.clearInputBox();
             const mod = this.moduleFor(message.nickname);
@@ -191,6 +193,7 @@ class Display {
 
     displaySystemMessage(text) {
         if (this.incognito) {
+            if (this.hideMessages) return;
             const wasInputActive = this.inputBoxActive;
             if (this.inputBoxActive) this.clearInputBox();
             if (this.suggestionsActive) this.clearEmojiSuggestions();

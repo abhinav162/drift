@@ -12,13 +12,19 @@ const InputHandler = require('./modules/input-handler');
 const Emoji = require('./modules/emoji');
 const VersionChecker = require('./modules/version-checker');
 const SnakeClient = require('./modules/snake-client');
+const { getMode } = require('./modules/incognito-modes');
 
 const incognitoMode = process.argv.includes('--incognito') || process.argv.includes('-ic');
+const modeArg = process.argv.find(a => a.startsWith('--mode='));
+const modeName = modeArg ? modeArg.split('=')[1] : 'htop';
 
 class ChatCLI {
     constructor() {
         this.display = new Display();
-        if (incognitoMode) this.display.incognito = true;
+        if (incognitoMode) {
+            this.display.incognito = true;
+            this.display.incognitoMode = getMode(modeName);
+        }
         this.games = new Games();
         this.emoji = new Emoji();
         this.chatClient = new ChatClient(this.display);

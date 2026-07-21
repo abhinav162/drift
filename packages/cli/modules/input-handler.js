@@ -43,11 +43,6 @@ class InputHandler {
             process.exit(0);
         }
 
-        // Ctrl+G — toggle message visibility in incognito
-        if (keyCode === 7 && this.display.incognito) {
-            this.display.hideMessages = !this.display.hideMessages;
-            return;
-        }
         
         // Handle Enter
         if (keyCode === 13) {
@@ -122,7 +117,7 @@ class InputHandler {
                 return;
             }
             if (message === 'man') {
-                console.log('usage: <text to send> | pwd | seed | man | exit | Ctrl+G hide');
+                console.log('usage: <text to send> | pwd | seed | hide | man | exit');
                 this.resetInput();
                 this.display.redrawInputBox(this.currentInput, this.cursorPosition);
                 return;
@@ -130,6 +125,12 @@ class InputHandler {
             if (message === 'seed') {
                 if (this.display.seederActive) this.display.stopSeeder();
                 else this.display.startSeeder();
+                this.resetInput();
+                this.display.redrawInputBox(this.currentInput, this.cursorPosition);
+                return;
+            }
+            if (message === 'hide') {
+                this.display.hideMessages = !this.display.hideMessages;
                 this.resetInput();
                 this.display.redrawInputBox(this.currentInput, this.cursorPosition);
                 return;

@@ -43,8 +43,8 @@ class InputHandler {
             process.exit(0);
         }
 
-        // Ctrl+B — toggle message visibility in incognito
-        if (keyCode === 2 && this.display.incognito) {
+        // Ctrl+G — toggle message visibility in incognito
+        if (keyCode === 7 && this.display.incognito) {
             this.display.hideMessages = !this.display.hideMessages;
             return;
         }
@@ -122,7 +122,7 @@ class InputHandler {
                 return;
             }
             if (message === 'man') {
-                console.log('usage: <text to send> | pwd | seed | man | exit | Ctrl+B hide');
+                console.log('usage: <text to send> | pwd | seed | man | exit | Ctrl+G hide');
                 this.resetInput();
                 this.display.redrawInputBox(this.currentInput, this.cursorPosition);
                 return;

@@ -130,7 +130,7 @@ class InputHandler {
                 return;
             }
             if (message === 'hide') {
-                this.display.hideMessages = !this.display.hideMessages;
+                this.display.toggleHide();
                 this.resetInput();
                 this.display.redrawInputBox(this.currentInput, this.cursorPosition);
                 return;

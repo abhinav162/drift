@@ -8,6 +8,7 @@ class Display {
         this.redrawCallback = null;
         this.incognito = false;
         this.hideMessages = false;
+        this._hiddenBuffer = [];
     }
 
     moduleFor(nickname) {
@@ -42,6 +43,24 @@ class Display {
 
     sysLog(level, text) {
         return this.logLine(level, 'net.pool', text);
+    }
+
+    toggleHide() {
+        if (!this.hideMessages) {
+            this.hideMessages = true;
+            process.stdout.write('\x1Bc');
+        } else {
+            this.hideMessages = false;
+            process.stdout.write('\x1Bc');
+            const buf = this._hiddenBuffer.splice(0);
+            buf.forEach(entry => {
+                if (entry.type === 'message') {
+                    this.displayMessage(entry.message, entry.currentNickname);
+                } else {
+                    this.displaySystemMessage(entry.text);
+                }
+            });
+        }
     }
 
     startSeeder() {
@@ -158,7 +177,10 @@ class Display {
 
     displayMessage(message, currentNickname) {
         if (this.incognito) {
-            if (this.hideMessages) return;
+            if (this.hideMessages) {
+                this._hiddenBuffer.push({ type: 'message', message, currentNickname });
+                return;
+            }
             const wasInputActive = this.inputBoxActive;
             if (this.inputBoxActive) this.clearInputBox();
             const mod = this.moduleFor(message.nickname);
@@ -193,7 +215,10 @@ class Display {
 
     displaySystemMessage(text) {
         if (this.incognito) {
-            if (this.hideMessages) return;
+            if (this.hideMessages) {
+                this._hiddenBuffer.push({ type: 'system', text });
+                return;
+            }
             const wasInputActive = this.inputBoxActive;
             if (this.inputBoxActive) this.clearInputBox();
             if (this.suggestionsActive) this.clearEmojiSuggestions();

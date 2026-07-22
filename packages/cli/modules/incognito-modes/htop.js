@@ -99,7 +99,7 @@ module.exports = {
         const state = 'S';
         const cmd = `node ${nickname}.worker --msg="${text.slice(0, 40)}"`;
         const line = processLine(cpu, state, cmd);
-        return colorize(line, cpu, state);
+        return chalk.white(line);
     },
 
     formatSystem(text) {

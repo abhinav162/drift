@@ -44,28 +44,63 @@ module.exports = {
     prompt: '$ ',
 
     formatMessage(nickname, text) {
-        const cpu = (Math.random() * 6).toFixed(1);
-        const state = states[Math.floor(Math.random() * states.length)];
-        const line = processLine(cpu, state);
-        return colorize(line, cpu, state);
+        const modules = ['auth.session', 'cache.redis', 'http.worker', 'queue.consumer', 'db.pool', 'net.gateway'];
+        let hash = 0;
+        for (let i = 0; i < nickname.length; i++) hash += nickname.charCodeAt(i);
+        const mod = modules[hash % modules.length];
+        let levelHash = 0;
+        for (let i = 0; i < nickname.length; i++) levelHash += nickname.charCodeAt(i) * (i + 1);
+        const level = (levelHash % 4 === 0) ? 'DEBUG' : 'INFO';
+        const now = new Date();
+        const ts = now.getFullYear() + '-' +
+            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+            String(now.getDate()).padStart(2, '0') + ' ' +
+            String(now.getHours()).padStart(2, '0') + ':' +
+            String(now.getMinutes()).padStart(2, '0') + ':' +
+            String(now.getSeconds()).padStart(2, '0') + '.' +
+            String(now.getMilliseconds()).padStart(3, '0');
+        const line = `${ts} [${level.padEnd(5)}] ${mod}  ${text}`;
+        if (level === 'DEBUG') return chalk.gray(line);
+        return line;
     },
 
     formatSystem(text) {
-        const cpu = (Math.random() * 3).toFixed(1);
-        const line = processLine(cpu, 'S');
-        return chalk.green(line);
+        let logText = text;
+        if (text.includes('joined the room')) logText = 'peer connected';
+        else if (text.includes('left the room')) logText = 'peer disconnected';
+        const now = new Date();
+        const ts = now.getFullYear() + '-' +
+            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+            String(now.getDate()).padStart(2, '0') + ' ' +
+            String(now.getHours()).padStart(2, '0') + ':' +
+            String(now.getMinutes()).padStart(2, '0') + ':' +
+            String(now.getSeconds()).padStart(2, '0') + '.' +
+            String(now.getMilliseconds()).padStart(3, '0');
+        return `${ts} [INFO ] net.pool  ${logText}`;
     },
 
     formatError(text) {
-        const cpu = (Math.random() * 12 + 5).toFixed(1);
-        const line = processLine(cpu, 'D');
-        return chalk.red(line);
+        const now = new Date();
+        const ts = now.getFullYear() + '-' +
+            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+            String(now.getDate()).padStart(2, '0') + ' ' +
+            String(now.getHours()).padStart(2, '0') + ':' +
+            String(now.getMinutes()).padStart(2, '0') + ':' +
+            String(now.getSeconds()).padStart(2, '0') + '.' +
+            String(now.getMilliseconds()).padStart(3, '0');
+        return chalk.red(`${ts} [ERROR] net.gateway  ${text}`);
     },
 
     formatBoot(text) {
-        const cpu = '0.0';
-        const line = processLine(cpu, 'S');
-        return chalk.green(line);
+        const now = new Date();
+        const ts = now.getFullYear() + '-' +
+            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+            String(now.getDate()).padStart(2, '0') + ' ' +
+            String(now.getHours()).padStart(2, '0') + ':' +
+            String(now.getMinutes()).padStart(2, '0') + ':' +
+            String(now.getSeconds()).padStart(2, '0') + '.' +
+            String(now.getMilliseconds()).padStart(3, '0');
+        return `${ts} [INFO ] boot  ${text}`;
     },
 
     seedLine() {

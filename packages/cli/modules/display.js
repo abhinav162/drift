@@ -46,7 +46,6 @@ class Display {
 
     startSeeder() {
         this.seederActive = true;
-        this.drawHeader();
         this._scheduleSeed();
     }
 

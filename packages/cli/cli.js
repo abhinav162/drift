@@ -243,6 +243,10 @@ class ChatCLI {
     startChatInterface() {
         this.inChatMode = true;
         if (!this.display.incognito) this.display.showChatIntro();
+        if (this.display.incognito) {
+            process.stdout.write('\x1Bc');
+            this.display.drawHeader();
+        }
         this.inputHandler.setupInputBox();
         if (this.display.incognito) this.display.startSeeder();
     }

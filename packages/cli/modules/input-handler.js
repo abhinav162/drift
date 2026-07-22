@@ -15,6 +15,7 @@ class InputHandler {
     }
 
     setupInputBox() {
+        process.stdin.removeAllListeners('data');
         process.stdin.setRawMode(true);
         process.stdin.resume();
         process.stdin.setEncoding('utf8');

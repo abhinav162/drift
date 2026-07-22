@@ -19,9 +19,16 @@ class Display {
         if (this._timeline.length > 200) this._timeline.shift();
     }
 
+    drawHeader() {
+        if (this.incognitoMode && this.incognitoMode.header) {
+            console.log(this.incognitoMode.header());
+        }
+    }
+
     toggleHide() {
         this.hideMessages = !this.hideMessages;
         process.stdout.write('\x1Bc');
+        this.drawHeader();
         const filter = this.hideMessages ? e => e.kind === 'seed' : () => true;
         this._timeline.filter(filter).forEach(e => console.log(e.line));
         if (this.redrawCallback) this.redrawCallback();

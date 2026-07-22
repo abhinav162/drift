@@ -15,19 +15,20 @@ class InputHandler {
     }
 
     setupInputBox() {
+        process.stdin.removeAllListeners('data');
         process.stdin.setRawMode(true);
         process.stdin.resume();
         process.stdin.setEncoding('utf8');
-        
+
         this.inputBoxActive = true;
         this.currentInput = '';
         this.cursorPosition = 0;
-        
+
         // Register our redraw callback with the display
         this.display.setRedrawCallback(() => this.redrawAfterInterruption());
-        
+
         this.display.redrawInputBox(this.currentInput, this.cursorPosition);
-        
+
         process.stdin.on('data', (key) => {
             this.handleKeypress(key);
         });
